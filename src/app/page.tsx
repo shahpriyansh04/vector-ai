@@ -1,9 +1,17 @@
-import Image from "next/image";
+"use client";
+import { SignInButton, UserButton } from "@clerk/nextjs";
+import { Authenticated, Unauthenticated } from "convex/react";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hello world 123@gmail.com
+      <Unauthenticated>
+        <SignInButton />
+      </Unauthenticated>
+      <Authenticated>
+        <UserButton />
+        <p>hello world</p>
+      </Authenticated>{" "}
     </main>
   );
 }
