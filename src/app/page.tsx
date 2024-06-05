@@ -1,31 +1,21 @@
 "use client";
-import { SignInButton, UserButton } from "@clerk/nextjs";
-import {
-  Authenticated,
-  Unauthenticated,
-  useMutation,
-  useQuery,
-} from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/theme-toggle";
+import CreateDocumentButton from "./create-document-button";
+import DocumentCard from "./document-card";
 
 export default function Home() {
   const documents = useQuery(api.documents.getDocuments);
   const createDocument = useMutation(api.documents.createDocument);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Unauthenticated>
-        <SignInButton />
-      </Unauthenticated>
-      <Authenticated>
-        <ModeToggle />
-        <UserButton />
-        <Button onClick={() => createDocument({ title: "Hello World" })}>
-          hello world
-        </Button>
-        <ul>{documents?.map((doc) => <li key={doc._id}>{doc.title}</li>)}</ul>
-      </Authenticated>{" "}
+    <main className=" p-24 space-y-8">
+      <div className="flex justify-between">
+        <h1 className="text-4xl">My Documents</h1>
+        <CreateDocumentButton />
+      </div>
+      <div className="grid grid-cols-4 gap-8 w-full">
+        {documents?.map((doc) => <DocumentCard document={doc} key={doc._id} />)}
+      </div>
     </main>
   );
 }
